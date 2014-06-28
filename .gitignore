@@ -1,0 +1,10 @@
+/bootstrap/compiled.php
+/vendor
+/app/storage/quran/*.png
+composer.phar
+composer.lock
+phantomjs
+.env.local.php
+.env.php
+.DS_Store
+Thumbs.db
