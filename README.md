@@ -35,7 +35,16 @@ Installation
     | `your table name` | id        | db_id       | sura_id  | verse_id | ayah      |
 
     \* *Note that Malay translation have some issue with the verse ordering in some of it's surah.* 
+    
+6. Make storage folder rewritable
 
+    ```
+    chmod -R 770 app/storage/
+    ```
+    
+Notes
+-----
+On first execution, the page load will be quite slow depend on internet connection since the app will download browscap for the first time.
 
 License
 -------
