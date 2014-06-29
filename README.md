@@ -30,9 +30,9 @@ Installation
 
 5. Download quran database from http://qurandatabase.org/. Set the value as below and import to your database server.
     
-    | Table             | ID Column | Database ID | Surah ID | Verse ID | Ayah Text |
-    |-------------------|-----------|-------------|----------|----------|-----------|
-    | `your table name` | id        | db_id       | sura_id  | verse_id | ayah      |
+    | Table  | ID Column | Database ID | Surah ID | Verse ID | Ayah Text |
+    |--------|-----------|-------------|----------|----------|-----------|
+    | qurans | id        | db_id       | sura_id  | verse_id | ayah      |
 
     \* *Note that Malay translation have some issue with the verse ordering in some of it's surah.* 
     
