@@ -46,6 +46,21 @@ Notes
 -----
 On first execution, the page load will be quite slow depend on internet connection since the app will download browscap for the first time.
 
+Tasks
+-----
+ - Prevent batch image generation (only for new image generate, not for image that has already been generated). Limit maximum 10 images that can be generate in less than 3 seconds for a person.
+ - Analytic. (create a simple panel, or integrate to GA)
+ - Panel to ease the regeneration/deletion process of images based on any condition that can be specified
+    - range of time
+    - certain surah/ayah/verse
+    - old images that not been access for a long time
+ - More parameters support. User able to
+    - change font
+    - change color
+    - change background
+ - Test, test, test
+ - Refactor codes
+
 License
 -------
 
