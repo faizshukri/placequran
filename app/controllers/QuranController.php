@@ -1,4 +1,5 @@
 <?php
+use Symfony\Component\Process\Process;
 
 class QuranController extends BaseController {
 
@@ -79,19 +80,24 @@ class QuranController extends BaseController {
             // Generate the image with Phantomjs and compress it with Imagemagick
             $command = Config::get('quran.path')['phantomjs'].' '.base_path().'/rasterize.js "'. url() .'/'. $this->url .'?type=debug&key='. $key .'" '.$image_path.' 600px';
             $command .= ' && '.Config::get('quran.path')['mogrify'].' -quality '.Config::get('quran.quality').' ' . $image_path;
-            $command .= ' && echo done';
 
-            $out = shell_exec($command);
+            $process = new Process($command);
+            $process->setTimeout(60); //seconds
+            $process->run();
 
-            if(trim($out)=='done' && file_exists($image_path)){
+            // executes after the command finishes
+            if (!$process->isSuccessful()) {
+
+                // @TODO should return fail image
+                return $this->noImageFound();
+            }
+
+            if(file_exists($image_path)){
                 $this->logUserAccess(1);
                 $img = Image::make($image_path);
                 return $img->response();
             }
 
-            // @TODO should return fail image
-            // return 'fail';
-            return $this->noImageFound();
         }
     }
 

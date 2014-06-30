@@ -5,9 +5,12 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",
-		"way/generators": "1.*",
-		"intervention/image": "dev-master",
-		"browscap/browscap-php": "dev-master"
+		"intervention/image": "2.0.*",
+		"browscap/browscap-php": "2.0.*",
+		"symfony/process": "2.4.*"
+	},
+	"require-dev": {
+		"way/generators": "1.*"
 	},
 	"autoload": {
 		"classmap": [
@@ -35,5 +38,5 @@
 	"config": {
 		"preferred-install": "dist"
 	},
-	"minimum-stability": "dev"
+	"minimum-stability": "stable"
 }

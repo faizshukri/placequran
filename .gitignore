@@ -2,7 +2,6 @@
 /vendor
 /app/storage/quran/*.png
 composer.phar
-composer.lock
 phantomjs
 .env.local.php
 .env.php
