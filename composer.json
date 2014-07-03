@@ -6,8 +6,7 @@
 	"require": {
 		"laravel/framework": "4.1.*",
 		"intervention/image": "2.0.*",
-		"browscap/browscap-php": "2.0.*",
-		"symfony/process": "2.4.*"
+		"browscap/browscap-php": "2.0.*"
 	},
 	"require-dev": {
 		"way/generators": "1.*"
