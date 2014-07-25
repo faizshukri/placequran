@@ -29,7 +29,7 @@ return array(
         'name' => 'Faiz Shukri'
     ),
 
-    // Full path to our tools. Install it first if still not having it.
+    // Full path to our tools. Install them first if still not having it.
     // PhantomJS => http://phantomjs.org
     // Mogrify => http://www.imagemagick.org
     'path' => array(

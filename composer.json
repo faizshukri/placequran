@@ -3,8 +3,8 @@
 	"description": "Place Quran",
 	"license": "MIT",
 	"require": {
-		"laravel/framework": "4.1.*",
-		"intervention/image": "2.0.*",
+		"laravel/framework": "4.2.*",
+		"intervention/image": "2.*",
 		"browscap/browscap-php": "2.0.*"
 	},
 	"require-dev": {
