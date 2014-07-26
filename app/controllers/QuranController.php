@@ -150,7 +150,7 @@ class QuranController extends BaseController {
     }
 
     private function filterTranslation(){
-        $this->translation = implode(',',array_unique( array_intersect( explode( ',', $this->translation), $this->available_translation) ) );
+        $this->translation = implode(',',array_slice(array_unique( array_intersect( explode( ',', $this->translation), $this->available_translation)), 0, Config::get('quran.max_translation')) );
         if(!$this->translation) $this->translation = 'ar';
     }
 

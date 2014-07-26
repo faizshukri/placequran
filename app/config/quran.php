@@ -5,6 +5,9 @@ return array(
     //Max verses to be rendered in single image
     'max_verses' => 15,
 
+    //Max translation to be rendered in image
+    'max_translation' => 3,
+
     //Available translation (db_id => name)
     'translations' => array(
         1 => 'ar', 

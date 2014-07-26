@@ -50,7 +50,7 @@ Tasks
 -----
  - Prevent batch image generation (only for new image generate, not for image that has already been generated). Limit maximum 10 images that can be generate in less than 3 seconds for a person.
  - Separate bismillah from 1st verse in every surah. Show bismillah only when appropriate; when user request more than 1 verse start with 1st verse. If only 1st verse requested, no need to show bismillah.
- - Limit to 3 translations only for a single image
+ - ~~Limit to 3 translations only for a single image~~
  - Put surah name, and verse number in the image.
  - Analytic. (create a simple panel, or integrate to GA)
  - Panel to ease the regeneration/deletion process of images based on any condition that can be specified
