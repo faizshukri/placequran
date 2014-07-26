@@ -151,6 +151,7 @@ class QuranController extends BaseController {
 
     private function filterTranslation(){
         $this->translation = implode(',',array_unique( array_intersect( explode( ',', $this->translation), $this->available_translation) ) );
+        if(!$this->translation) $this->translation = 'ar';
     }
 
     // Return file name. If $raw is true, it will return the original file name instead of hash version
