@@ -118,7 +118,7 @@
 						</ul>
 					<br /><br />
 					<hr />
-					<div align="center">Created with &hearts; <span class="developer-footer">by &copy; Faiz Shukri [ <a href="http://twitter.com/faizshudin" target="_blank">@faizshudin</a> ] | 2014</span></div>
+					<div align="center">Created with &hearts; <span class="developer-footer">by &copy; Faiz Shukri [ <a href="http://twitter.com/faizshudin" target="_blank">@faizshudin</a> ] | 2014 - {{ date("Y") }}</span></div>
 				</div>
 			</div>
 		</div>
