@@ -1,5 +1,6 @@
 import test from "ava";
 import {
+  filterParam,
   generateHtml,
   getVerses,
   parseParam,
@@ -67,6 +68,35 @@ test("Parse expected param correctly", (t) => {
     surah: 1,
     verses: [1],
     translations: ["ar", "ms", "23"],
+  });
+});
+
+test("FilterParam should works correctly", (t) => {
+  t.deepEqual(filterParam(parseParam("112", "1-5", "fake,ar")), {
+    surah: 112,
+    verses: [1, 2, 3, 4],
+    translations: ["ar"],
+  });
+
+  t.deepEqual(filterParam(parseParam("115", "1-5", "ms")), {
+    surah: 0,
+    verses: [],
+    translations: ["ar"],
+  });
+
+  t.deepEqual(filterParam(parseParam("115", "1-5")), {
+    surah: 0,
+    verses: [],
+    translations: ["ar"],
+  });
+
+  config.max_verses = 2;
+  config.max_translation = 2;
+
+  t.deepEqual(filterParam(parseParam("2", "1-10", "ar,aa,ms,en")), {
+    surah: 2,
+    verses: [1, 2],
+    translations: ["ar", "ms"],
   });
 });
 

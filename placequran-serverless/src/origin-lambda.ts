@@ -1,13 +1,20 @@
 import log from "./lib/log";
 import { S3 } from "aws-sdk";
-import { createHash } from "crypto";
-import { parsePath, generator } from "./generator";
+import { generator } from "./generator";
 import { URLSearchParams } from "url";
-import { parseParam } from "./quran";
 import getCacheHeader from "./lib/cache-header";
 import get404 from "./lib/get404";
+import getHashKey from "./lib/hash-key";
+import {
+  APIGatewayProxyEventV2,
+  APIGatewayProxyResultV2,
+  Context,
+} from "aws-lambda";
 
-export async function handler(event, context) {
+export async function handler(
+  event: APIGatewayProxyEventV2,
+  context: Context
+): Promise<APIGatewayProxyResultV2> {
   log(event.rawPath);
 
   const regex = /^\/?(\d+)(?:\/|$)/gm;
@@ -19,12 +26,7 @@ export async function handler(event, context) {
       return event.rawPath.replace(/^\/?/gm, "") || "index.html";
     }
 
-    const { surah, verses, translations } = parsePath(
-      event.rawPath,
-      event.rawQueryString
-    );
-    const params = JSON.stringify(parseParam(surah, verses, translations));
-    return "tmp/" + createHash("md5").update(params).digest("hex") + ".png";
+    return getHashKey(event.rawPath);
   })();
 
   let body = "";
