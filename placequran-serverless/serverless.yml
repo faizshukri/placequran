@@ -1,0 +1,134 @@
+service: placequran-sls
+frameworkVersion: "2"
+variablesResolutionMode: 20210326
+
+plugins:
+  - serverless-webpack
+
+  # to works locally, comment `serverless-webpack` above, and uncomment both below
+  # - serverless-plugin-typescript
+  # - serverless-offline
+
+custom:
+  dotenvVars: ${file(env.js)}
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  lambdaHashingVersion: 20201221
+
+  stage: ${self:custom.dotenvVars.ENVIRONMENT, 'dev'}
+  region: ${self:custom.dotenvVars.AWS_DEFAULT_REGION, 'us-east-1'}
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:GetObject"
+      Resource:
+        Fn::Join: ["", ["arn:aws:s3:::", { "Ref": WebsiteBucket }, "/*"]]
+    - Effect: "Allow"
+      Action:
+        - "s3:ListBucket"
+      Resource:
+        Fn::Join: ["", ["arn:aws:s3:::", { "Ref": WebsiteBucket }]]
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+      Resource:
+        Fn::Join: ["", ["arn:aws:s3:::", { "Ref": WebsiteBucket }, "/*"]]
+
+  environment:
+    WEBSITE_BUCKET: !Ref WebsiteBucket
+
+package:
+  individually: true
+
+functions:
+  originLambda:
+    handler: src/origin-lambda.handler
+    timeout: 20
+    layers:
+      - ${self:custom.dotenvVars.PLACEQURAN_LAYER_ARN, 'arn:aws:lambda:us-east-1:321068630266:layer:placequran-layer:3'}
+    events:
+      - httpApi: "*"
+
+resources:
+  Resources:
+    WebsiteBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.dotenvVars.BUCKET_NAME, 'placequran-website'}-${self:provider.stage}
+        LifecycleConfiguration:
+          Rules:
+            - Id: remove-tmp-after-a-month
+              Prefix: tmp/
+              Status: Enabled
+              ExpirationInDays: 1
+    WebsiteBucketAllowPublicReadPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref WebsiteBucket
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action: "s3:GetObject"
+              Resource:
+                - !Join ["/", [!GetAtt [WebsiteBucket, Arn], "*"]]
+              Principal: "*"
+    CloudFrontDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Enabled: true
+          PriceClass: ${self:custom.dotenvVars.CLOUDFRONT_PRICECLASS, 'PriceClass_100'}
+          Origins:
+            - Id: Lambda Origin
+              DomainName:
+                Fn::Join:
+                  [
+                    ".",
+                    [
+                      { "Ref": HttpApi },
+                      "execute-api",
+                      { "Ref": AWS::Region },
+                      "amazonaws.com",
+                    ],
+                  ]
+              CustomOriginConfig:
+                OriginProtocolPolicy: match-viewer
+            - Id: S3 Origin
+              DomainName: !GetAtt [WebsiteBucket, DomainName]
+              S3OriginConfig: {}
+          CacheBehaviors:
+            - TargetOriginId: Lambda Origin
+              CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6" # CachingOptimized
+              ViewerProtocolPolicy: redirect-to-https
+              PathPattern: "*/*"
+          DefaultCacheBehavior:
+            TargetOriginId: S3 Origin
+            CachePolicyId: "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" # CachingDisabled for dev
+            ViewerProtocolPolicy: allow-all
+          DefaultRootObject: index.html
+          Aliases:
+            - ${self:custom.dotenvVars.CLOUDFRONT_DOMAIN, "${self:provider.stage}.placequran.com"}
+          ViewerCertificate:
+            AcmCertificateArn: ${self:custom.dotenvVars.CLOUDFRONT_ACM_CERT_ARN, "arn:aws:acm:us-east-1:321068630266:certificate/10cfa1d6-4dc9-4110-a1e5-4c34e3de12ef"}
+            MinimumProtocolVersion: TLSv1
+            SslSupportMethod: sni-only
+          CustomErrorResponses:
+            - ErrorCode: 400
+              ResponseCode: 200
+              ResponsePagePath: "/error-404.png"
+            - ErrorCode: 403
+              ResponseCode: 200
+              ResponsePagePath: "/error-404.png"
+            - ErrorCode: 404
+              ResponseCode: 200
+              ResponsePagePath: "/error-404.png"
+            - ErrorCode: 500
+              ResponseCode: 200
+              ResponsePagePath: "/error-404.png"
+            - ErrorCode: 503
+              ResponseCode: 200
+              ResponsePagePath: "/error-404.png"

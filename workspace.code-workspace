@@ -1,0 +1,18 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "name": "placequran"
+    },
+    {
+      "path": "placequran-serverless"
+    },
+    {
+      "path": "placequran-website"
+    },
+    {
+      "path": "placequran-layer"
+    }
+  ],
+  "settings": {}
+}

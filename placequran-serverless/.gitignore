@@ -1,0 +1,6 @@
+.webpack
+.webpackCache
+.serverless
+.build
+node_modules
+yarn-error.log
