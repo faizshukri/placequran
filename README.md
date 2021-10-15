@@ -28,6 +28,8 @@ A static website to serve the main page.
 
 A separate project to build a dependency lambda layer, to be consumed by `serverless` component. The major dependencies here are `puppeteer`, `better-sqlite3`, quran font and database.
 
+Before you can build, you need to download the [chrome_aws_lambda.zip](https://github.com/shelfio/chrome-aws-lambda-layer) or ([build by yourself](https://github.com/alixaxel/chrome-aws-lambda#aws-lambda-layer)), and put it in the `/placequran-layer/` directory.
+
 | Command     | Description                     |
 | ----------- | ------------------------------- |
 | yarn build  | Build the layer zip file        |

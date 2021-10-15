@@ -10,7 +10,7 @@ npm install --prefix nodejs --no-package-lock --no-save better-sqlite3
 pack=$(npm pack)
 
 mkdir -p nodejs/node_modules/chrome-aws-lambda/
-tar --directory nodejs/node_modules/chrome-aws-lambda/ --extract --file chrome-aws-lambda-10.1.0.tgz --strip-components=1
+tar --directory nodejs/node_modules/chrome-aws-lambda/ --extract --file chrome-aws-lambda*.tgz --strip-components=1
 
 mkdir -p nodejs/node_modules/placequran-layer/
 tar --directory nodejs/node_modules/placequran-layer/ --extract --file $pack --strip-components=1
