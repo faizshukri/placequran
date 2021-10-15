@@ -98,7 +98,7 @@ resources:
               CustomOriginConfig:
                 OriginProtocolPolicy: match-viewer
             - Id: S3 Origin
-              DomainName: !GetAtt [WebsiteBucket, DomainName]
+              DomainName: !GetAtt [WebsiteBucket, RegionalDomainName]
               S3OriginConfig: {}
           CacheBehaviors:
             - TargetOriginId: Lambda Origin
