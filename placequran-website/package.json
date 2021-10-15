@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "parcel src/index.html",
     "prebuild": "rimraf ./dist",
-    "build": "parcel build src/index.html src/error*",
+    "build": "parcel build src/index.html",
+    "postbuild": "cp -r static/* dist/",
     "predeploy": "npm run build",
     "deploy": "dotenv cross-var ./deploy.sh"
   },
