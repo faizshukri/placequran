@@ -1,0 +1,16 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="white" />
+  <g>
+    <title>Layer 1</title>
+    <g id="svg_1">
+      <text text-anchor="middle" x="500" y="81.60157" id="svg_4" font-size="48" fill="#b2b2b2">
+        <tspan x="200" dy="1.2em" id="svg_5">Image</tspan>
+        <tspan x="200" dy="1.2em" id="svg_6">Not Available</tspan>
+      </text>
+    </g>
+    <text letter-spacing="2" fill="#d3d3d3" stroke="#000" x="200" y="287" id="svg_3" font-size="18"
+      font-family="'Open Sans'" text-anchor="middle" xml:space="preserve" font-weight="normal" font-style="normal"
+      stroke-width="0">placequran.com</text>
+  </g>
+
+</svg>

@@ -1,0 +1,21 @@
+{
+  "name": "placequran-website",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "parcel src/index.html",
+    "prebuild": "rimraf ./dist",
+    "build": "parcel build src/index.html src/error*",
+    "predeploy": "npm run build",
+    "deploy": "dotenv cross-var ./deploy.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cross-var": "^1.1.0",
+    "dotenv-cli": "^4.0.0",
+    "parcel": "^2.0.0-rc.0",
+    "rimraf": "^3.0.2"
+  }
+}
