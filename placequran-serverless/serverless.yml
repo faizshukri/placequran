@@ -60,10 +60,10 @@ resources:
         BucketName: ${self:custom.dotenvVars.BUCKET_NAME, 'placequran-website'}-${self:provider.stage}
         LifecycleConfiguration:
           Rules:
-            - Id: remove-tmp-after-a-month
+            - Id: remove-tmp-after-3-month
               Prefix: tmp/
               Status: Enabled
-              ExpirationInDays: 1
+              ExpirationInDays: 90
     WebsiteBucketAllowPublicReadPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
