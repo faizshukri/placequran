@@ -39,6 +39,10 @@ module.exports = {
         test: /\.node$/,
         loader: "node-loader",
       },
+      {
+        test: /\.pug$/,
+        loader: "pug-loader",
+      },
     ],
   },
   plugins: [new ForkTsCheckerWebpackPlugin()],

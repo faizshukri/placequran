@@ -1,0 +1,92 @@
+doctype html
+html(lang='en')
+  head
+    title Place Quran
+    meta(charset='UTF-8')
+    meta(http-equiv='Content-Type' content='text/html; charset=utf-8')
+    style.
+      @font-face {
+        font-family: me_quran;
+        font-style: normal;
+        font-weight: normal;
+        src: url(#{fontBase64.MeQuran}) format('truetype');
+      }
+      @font-face {
+        font-family: "Noto Naskh Arabic";
+        font-style: normal;
+        font-weight: normal;
+        src: url(#{fontBase64.NotoNaskhArabic}) format('truetype');
+      }
+      .translation-general {
+        font-family: 'Open Sans', sans-serif;
+        font-style: italic;
+        font-size: 15px;
+        word-spacing: 3px;
+        line-height: 22px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-weight: lighter;
+      }
+      .translation-ar {
+        font-family: me_quran;
+        text-align: right;
+        line-height: 60px;
+        font-style: normal;
+        font-size: 24px;
+        margin-top: 10px;
+      }
+      .translation-ar .berhenti {
+        position: relative;
+        font-size: 26px;
+        font-weight: bold;
+        color: darkgreen;
+      }
+      .translation-ar .berhenti .no_ayat {
+        font-family: 'Noto Naskh Arabic', sans-serif;
+        position: absolute;
+        left: 6px;
+        bottom: -19px;
+        font-size: 16px;
+        width: 40px;
+        text-align: center;
+        font-weight: normal;
+      }
+      .translation-ar .berhenti.last .no_ayat {
+        left: 2px;
+      }
+      .no_ayat {
+        color: darkgreen;
+      }
+      .footer {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 20px;
+        color: lightgrey;
+        padding-bottom: 10px;
+        text-align: center;
+        letter-spacing: 3px;
+        margin-top: 20px;
+      }
+      body {
+        width: 600px;
+        padding: 1px 15px;
+        margin: 0px;
+      }
+  body
+    each translation in translations
+      .translation-general(class=`translation-${translation.translation}`)
+        each verse, index in translation.verses
+          - var isLast = index == translation.verses.length - 1
+          | #{verse.text}
+          if translation.translation == "ar"
+            span.berhenti(class=`${isLast ? "last" : ""}`)
+              | &nbsp;&nbsp;۝&nbsp;
+              span.no_ayat #{romanToArabic(verse.aya)}
+          else 
+            | 
+            strong 
+              span.no_ayat [#{verse.aya}]
+            | <strong><span class="no_ayat"></span></strong>
+
+          unless isLast
+            | &nbsp;&nbsp;
+    .footer placequran.com

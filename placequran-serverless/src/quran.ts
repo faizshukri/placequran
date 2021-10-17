@@ -4,7 +4,8 @@ import * as R from "ramda";
 import html2image from "./lib/html2image";
 import { sqliteDb, fontBase64 } from "placequran-layer";
 import config from "./config";
-
+import pug from "pug";
+import * as path from "path";
 export class QuranParamError extends Error {
   constructor(m: string) {
     super(m);
@@ -296,117 +297,11 @@ export const generateHtml = (
     throw new QuranParamError("Data not available");
   }
 
-  return `
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <title>Place Quran</title>
-      <meta charset="UTF-8">
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-      <style>
-      @font-face {
-        font-family: me_quran;
-        font-style: normal;
-        font-weight: normal;
-        src: url(${fontBase64.MeQuran}) format('truetype');
-      }
-
-      @font-face {
-        font-family: "Noto Naskh Arabic";
-        font-style: normal;
-        font-weight: normal;
-        src: url(${fontBase64.NotoNaskhArabic}) format('truetype');
-      }
-
-      .translation-general {
-        font-family: 'Open Sans', sans-serif;
-        font-style: italic;
-        font-size: 15px;
-        word-spacing: 3px;
-        line-height: 22px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        font-weight: lighter;
-      }
-
-      .translation-ar {
-        font-family: me_quran;
-        text-align: right;
-        line-height: 60px;
-        font-style: normal;
-        font-size: 24px;
-        margin-top: 10px;
-      }
-
-      .translation-ar .berhenti {
-        position: relative;
-        font-size: 26px;
-        font-weight: bold;
-        color: darkgreen;
-      }
-
-      .translation-ar .berhenti .no_ayat {
-        font-family: 'Noto Naskh Arabic', sans-serif;
-        position: absolute;
-        left: 6px;
-        bottom: -19px;
-        font-size: 16px;
-        width: 40px;
-        text-align: center;
-        font-weight: normal;
-      }
-
-      .translation-ar .berhenti.last .no_ayat {
-        left: 2px;
-      }
-
-      .no_ayat {
-        color: darkgreen;
-      }
-
-      .footer {
-        font-family: 'Open Sans', sans-serif;
-        font-size: 20px;
-        color: lightgrey;
-        padding-bottom: 10px;
-        text-align: center;
-        letter-spacing: 3px;
-        margin-top: 20px;
-      }
-
-      body {
-        width: 600px;
-        padding: 1px 15px;
-        margin: 0px;
-      }
-      </style>
-    </head>
-    <body>
-      ${translations
-        .map(({ translation, verses }) => {
-          return `
-        <div class="translation-general translation-${translation}">
-          ${verses
-            .map((verse, index) => {
-              const isLast = index == verses.length - 1;
-              return `${verse.text}${
-                translation === "ar"
-                  ? `<span class="berhenti ${
-                      isLast ? "last" : ""
-                    }">&nbsp;&nbsp;۝&nbsp;<span class="no_ayat">${romanToArabic(
-                      verse.aya
-                    )}</span></span>`
-                  : ` <strong><span class="no_ayat">[${verse.aya}]</span></strong>`
-              }`;
-            })
-            .join("&nbsp;&nbsp;")}
-        </div>
-        `;
-        })
-        .join("")}
-      <div class="footer">placequran.com</div>
-    </body>
-  </html>`;
+  return pug.renderFile(path.resolve(__dirname, "quran.template.pug"), {
+    fontBase64,
+    translations,
+    romanToArabic,
+  });
 };
 
 export const renderImage = html2image;

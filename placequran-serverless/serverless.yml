@@ -42,6 +42,8 @@ provider:
 
 package:
   individually: true
+  patterns:
+    - src/*.pug
 
 functions:
   originLambda:
