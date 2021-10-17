@@ -11,5 +11,8 @@ module.exports = {
   sqliteDb: new sqlite3(path.resolve(__dirname, "data/sqlite")),
   fontBase64: {
     MeQuran: loadFontBase64(path.resolve(__dirname, "data/me_quran.ttf")),
+    NotoNaskhArabic: loadFontBase64(
+      path.resolve(__dirname, "data/NotoNaskhArabic-Regular.ttf")
+    ),
   },
 };

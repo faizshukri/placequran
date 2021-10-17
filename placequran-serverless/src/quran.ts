@@ -303,15 +303,19 @@ export const generateHtml = (
       <title>Place Quran</title>
       <meta charset="UTF-8">
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic&family=Open+Sans&display=swap" rel="stylesheet">
       <style>
       @font-face {
         font-family: me_quran;
         font-style: normal;
         font-weight: normal;
         src: url(${fontBase64.MeQuran}) format('truetype');
+      }
+
+      @font-face {
+        font-family: "Noto Naskh Arabic";
+        font-style: normal;
+        font-weight: normal;
+        src: url(${fontBase64.NotoNaskhArabic}) format('truetype');
       }
 
       .translation-general {
@@ -342,7 +346,7 @@ export const generateHtml = (
       }
 
       .translation-ar .berhenti .no_ayat {
-        font-family: 'Noto Sans Arabic', sans-serif;
+        font-family: 'Noto Naskh Arabic', sans-serif;
         position: absolute;
         left: 6px;
         bottom: -19px;
