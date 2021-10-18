@@ -101,13 +101,17 @@ resources:
               DomainName: !GetAtt [WebsiteBucket, RegionalDomainName]
               S3OriginConfig: {}
           CacheBehaviors:
+            - TargetOriginId: S3 Origin
+              CachePolicyId: "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" # CachingDisabled temporarily for dev
+              ViewerProtocolPolicy: redirect-to-https
+              PathPattern: "*.*"
             - TargetOriginId: Lambda Origin
               CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6" # CachingOptimized
               ViewerProtocolPolicy: redirect-to-https
               PathPattern: "*/*"
           DefaultCacheBehavior:
             TargetOriginId: S3 Origin
-            CachePolicyId: "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" # CachingDisabled for dev
+            CachePolicyId: "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" # CachingDisabled temporarily for dev
             ViewerProtocolPolicy: redirect-to-https
           DefaultRootObject: index.html
           Aliases:
