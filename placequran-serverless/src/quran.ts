@@ -347,7 +347,7 @@ export const generateHtml = (
       .translation-ar {
         font-family: me_quran;
         text-align: right;
-        line-height: 60px;
+        line-height: 50px;
         font-style: normal;
         font-size: 22px;
         margin-top: 10px;
@@ -381,12 +381,12 @@ export const generateHtml = (
 
       .footer {
         font-family: 'Open Sans', sans-serif;
-        font-size: 20px;
+        font-size: 18px;
         color: lightgrey;
         padding-bottom: 10px;
         text-align: center;
         letter-spacing: 3px;
-        margin-top: 20px;
+        margin-top: 12px;
       }
 
       body {
