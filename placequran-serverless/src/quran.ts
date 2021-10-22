@@ -242,9 +242,9 @@ export const generateHtml = (
       .translation-general {
         font-family: 'Open Sans', sans-serif;
         font-style: italic;
-        font-size: 15px;
+        font-size: 16px;
         word-spacing: 3px;
-        line-height: 22px;
+        line-height: 23px;
         margin-top: 10px;
         margin-bottom: 10px;
         font-weight: lighter;
@@ -255,13 +255,13 @@ export const generateHtml = (
         text-align: right;
         line-height: 50px;
         font-style: normal;
-        font-size: 22px;
+        font-size: 24px;
         margin-top: 10px;
       }
 
       .translation-ar .berhenti {
         position: relative;
-        font-size: 26px;
+        font-size: 24px;
         font-weight: bold;
         color: darkgreen;
       }
@@ -269,7 +269,7 @@ export const generateHtml = (
       .translation-ar .berhenti .no_ayat {
         font-family: 'Noto Naskh Arabic', sans-serif;
         position: absolute;
-        left: 6px;
+        left: 5px;
         bottom: -14px;
         font-size: 16px;
         width: 40px;
@@ -278,7 +278,7 @@ export const generateHtml = (
       }
 
       .translation-ar .berhenti.last .no_ayat {
-        left: 2px;
+        left: 1px;
       }
 
       .translation-meta {
@@ -299,12 +299,12 @@ export const generateHtml = (
         padding-bottom: 10px;
         text-align: left;
         letter-spacing: 3px;
-        margin-top: -42px;
+        margin-top: -43px;
       }
 
       body {
-        width: 640px;
-        padding: 1px 15px;
+        width: 600px;
+        padding: 1px 5px;
         margin: 0px;
       }
       </style>
