@@ -4,6 +4,7 @@ import * as R from "ramda";
 import html2image from "./lib/html2image";
 import { sqliteDb, fontBase64 } from "placequran-layer";
 import config from "./config";
+import { Sura } from "./lib/quran-data";
 
 export class QuranParamError extends Error {
   constructor(m: string) {
@@ -64,123 +65,6 @@ export const parseParam = (
 };
 
 export const filterParam = (param: QuranParam): QuranParam => {
-  const maxVersesBySurah = {
-    1: 7,
-    2: 286,
-    3: 200,
-    4: 176,
-    5: 120,
-    6: 165,
-    7: 206,
-    8: 75,
-    9: 129,
-    10: 109,
-    11: 123,
-    12: 111,
-    13: 43,
-    14: 52,
-    15: 99,
-    16: 128,
-    17: 111,
-    18: 110,
-    19: 98,
-    20: 135,
-    21: 112,
-    22: 78,
-    23: 118,
-    24: 64,
-    25: 77,
-    26: 227,
-    27: 93,
-    28: 88,
-    29: 69,
-    30: 60,
-    31: 34,
-    32: 30,
-    33: 73,
-    34: 54,
-    35: 45,
-    36: 83,
-    37: 182,
-    38: 88,
-    39: 75,
-    40: 85,
-    41: 54,
-    42: 53,
-    43: 89,
-    44: 59,
-    45: 37,
-    46: 35,
-    47: 38,
-    48: 29,
-    49: 18,
-    50: 45,
-    51: 60,
-    52: 49,
-    53: 62,
-    54: 55,
-    55: 78,
-    56: 96,
-    57: 29,
-    58: 22,
-    59: 24,
-    60: 13,
-    61: 14,
-    62: 11,
-    63: 11,
-    64: 18,
-    65: 12,
-    66: 12,
-    67: 30,
-    68: 52,
-    69: 52,
-    70: 44,
-    71: 28,
-    72: 28,
-    73: 20,
-    74: 56,
-    75: 40,
-    76: 31,
-    77: 50,
-    78: 40,
-    79: 46,
-    80: 42,
-    81: 29,
-    82: 19,
-    83: 36,
-    84: 25,
-    85: 22,
-    86: 17,
-    87: 19,
-    88: 26,
-    89: 30,
-    90: 20,
-    91: 15,
-    92: 21,
-    93: 11,
-    94: 8,
-    95: 8,
-    96: 19,
-    97: 5,
-    98: 8,
-    99: 8,
-    100: 11,
-    101: 11,
-    102: 8,
-    103: 3,
-    104: 9,
-    105: 5,
-    106: 4,
-    107: 7,
-    108: 3,
-    109: 6,
-    110: 3,
-    111: 5,
-    112: 4,
-    113: 5,
-    114: 6,
-  };
-
   if (param.surah < 1 || param.surah > 114) {
     return {
       surah: 0,
@@ -189,8 +73,10 @@ export const filterParam = (param: QuranParam): QuranParam => {
     };
   }
 
+  const maxVerses = Sura[param.surah][1];
+
   param.verses = param.verses
-    .filter((a) => a <= maxVersesBySurah[param.surah])
+    .filter((a) => a <= maxVerses)
     .slice(0, config.max_verses);
 
   param.translations = param.translations
@@ -229,7 +115,7 @@ export const getVerses = async (
 
 export const prepareForHtml = (translations: {
   [key: string]: Verse[];
-}): { translation: string; verses: Verse[] }[] => {
+}): { translation: string; meta?: string; verses: Verse[] }[] => {
   const merged = Object.keys(translations).flatMap((translation) => {
     return translations[translation].map((verse) => ({
       ...verse,
@@ -241,6 +127,16 @@ export const prepareForHtml = (translations: {
   //   console.log(util.inspect(a, false, null, true /* enable colors */));
   //   return a;
   // };
+  const metadata = {};
+  const getMeta = (verses) => {
+    return {
+      translation: "meta",
+      meta: `${Sura[verses[0].sura][5]}: ${verses[0].aya}${
+        verses.length > 1 ? `-${R.last(verses).aya}` : ""
+      }`,
+      verses: [],
+    };
+  };
 
   return R.pipe(
     R.sort(R.ascend(R.prop("aya"))),
@@ -268,7 +164,13 @@ export const prepareForHtml = (translations: {
         delete verse.translation;
         acc[lastTranslationIndex].verses.push(verse);
       } else {
+        const metaKey = `meta-${acc[lastTranslationIndex].verses[0].aya}`;
+        if (!metadata[metaKey]) {
+          metadata[metaKey] = true;
+          acc.push(getMeta(R.last(acc).verses));
+        }
         const { translation, ...others } = verse;
+
         acc.push({
           translation,
           verses: [others],
@@ -276,7 +178,11 @@ export const prepareForHtml = (translations: {
       }
 
       return acc;
-    }, [])
+    }, []),
+    (val) => {
+      val.push(getMeta(R.last(val).verses));
+      return val;
+    }
   )(merged);
 };
 
@@ -290,7 +196,7 @@ export const romanToArabic = (number: number): string => {
 };
 
 export const generateHtml = (
-  translations: { translation: string; verses: Verse[] }[]
+  translations: { translation: string; meta?: string; verses: Verse[] }[]
 ): string => {
   if (!translations || translations.length == 0) {
     throw new QuranParamError("Data not available");
@@ -364,7 +270,7 @@ export const generateHtml = (
         font-family: 'Noto Naskh Arabic', sans-serif;
         position: absolute;
         left: 6px;
-        bottom: -19px;
+        bottom: -14px;
         font-size: 16px;
         width: 40px;
         text-align: center;
@@ -373,6 +279,13 @@ export const generateHtml = (
 
       .translation-ar .berhenti.last .no_ayat {
         left: 2px;
+      }
+
+      .translation-meta {
+        font-style: normal;
+        text-align: right;
+        padding-bottom: 10px;
+        font-weight: bold;
       }
 
       .no_ayat {
@@ -384,9 +297,9 @@ export const generateHtml = (
         font-size: 18px;
         color: lightgrey;
         padding-bottom: 10px;
-        text-align: center;
+        text-align: left;
         letter-spacing: 3px;
-        margin-top: 12px;
+        margin-top: -42px;
       }
 
       body {
@@ -398,23 +311,27 @@ export const generateHtml = (
     </head>
     <body>
       ${translations
-        .map(({ translation, verses }) => {
+        .map(({ translation, meta, verses }) => {
           return `
         <div class="translation-general translation-${translation}">
-          ${verses
-            .map((verse, index) => {
-              const isLast = index == verses.length - 1;
-              return `${verse.text}${
-                translation === "ar"
-                  ? `<span class="berhenti ${
-                      isLast ? "last" : ""
-                    }">&nbsp;&nbsp;۝&nbsp;<span class="no_ayat">${romanToArabic(
-                      verse.aya
-                    )}</span></span>`
-                  : ` <strong><span class="no_ayat">[${verse.aya}]</span></strong>`
-              }`;
-            })
-            .join("&nbsp;&nbsp;")}
+          ${
+            translation == "meta"
+              ? `&mdash; ${meta}`
+              : verses
+                  .map((verse, index) => {
+                    const isLast = index == verses.length - 1;
+                    return `${verse.text}${
+                      translation === "ar"
+                        ? `<span class="berhenti ${
+                            isLast ? "last" : ""
+                          }">&nbsp;&nbsp;۝&nbsp;<span class="no_ayat">${romanToArabic(
+                            verse.aya
+                          )}</span></span>`
+                        : ` <strong><span class="no_ayat">[${verse.aya}]</span></strong>`
+                    }`;
+                  })
+                  .join("&nbsp;&nbsp;")
+          }
         </div>
         `;
         })

@@ -115,12 +115,12 @@ test("Trim request when over limit", async (t) => {
         {
           aya: 1,
           sura: 2,
-          text: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ الٓمٓ",
+          text: "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ الٓمٓ",
         },
         {
           aya: 2,
           sura: 2,
-          text: "ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ فِيهِ هُدًى لِّلْمُتَّقِينَ",
+          text: "ذَٰلِكَ ٱلْكِتَـٰبُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًۭى لِّلْمُتَّقِينَ",
         },
       ],
       ms: [
@@ -178,12 +178,12 @@ test("Get verses correctly", async (t) => {
       {
         aya: 1,
         sura: 1,
-        text: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        text: "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ",
       },
       {
         aya: 2,
         sura: 1,
-        text: "ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ",
+        text: "ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ",
       },
     ],
     ms: [
@@ -345,6 +345,11 @@ test("Prepare html", async (t) => {
       ],
     },
     {
+      meta: "Al-Baqara: 1-2",
+      translation: "meta",
+      verses: [],
+    },
+    {
       translation: "ar",
       verses: [
         {
@@ -363,6 +368,11 @@ test("Prepare html", async (t) => {
           text: "c",
         },
       ],
+    },
+    {
+      meta: "Al-Baqara: 4",
+      translation: "meta",
+      verses: [],
     },
     {
       translation: "ar",
@@ -393,6 +403,11 @@ test("Prepare html", async (t) => {
           text: "e",
         },
       ],
+    },
+    {
+      meta: "Al-Baqara: 6-7",
+      translation: "meta",
+      verses: [],
     },
   ]);
 });
