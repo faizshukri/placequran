@@ -296,6 +296,12 @@ export const generateHtml = (
     throw new QuranParamError("Data not available");
   }
 
+  const fonts = {
+    MeQuran: fontBase64.MeQuran(),
+    NotoNaskhArabic: fontBase64.NotoNaskhArabic(),
+    OpenSans: fontBase64.OpenSans(),
+  };
+
   return `
   <!DOCTYPE html>
   <html lang="en">
@@ -308,14 +314,23 @@ export const generateHtml = (
         font-family: me_quran;
         font-style: normal;
         font-weight: normal;
-        src: url(${fontBase64.MeQuran}) format('truetype');
+        src: url(${fonts.MeQuran.data}) format('${fonts.MeQuran.format}');
       }
 
       @font-face {
         font-family: "Noto Naskh Arabic";
         font-style: normal;
         font-weight: normal;
-        src: url(${fontBase64.NotoNaskhArabic}) format('truetype');
+        src: url(${fonts.NotoNaskhArabic.data}) format('${
+    fonts.NotoNaskhArabic.format
+  }');
+      }
+
+      @font-face {
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: normal;
+        src: url(${fonts.OpenSans.data}) format('${fonts.OpenSans.format}');
       }
 
       .translation-general {
@@ -334,7 +349,7 @@ export const generateHtml = (
         text-align: right;
         line-height: 60px;
         font-style: normal;
-        font-size: 24px;
+        font-size: 22px;
         margin-top: 10px;
       }
 
@@ -375,7 +390,7 @@ export const generateHtml = (
       }
 
       body {
-        width: 600px;
+        width: 640px;
         padding: 1px 15px;
         margin: 0px;
       }

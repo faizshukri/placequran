@@ -2,17 +2,31 @@ const path = require("path");
 const sqlite3 = require("better-sqlite3");
 const fs = require("fs");
 
-const loadFontBase64 = (path) => {
-  const base64Font = fs.readFileSync(path).toString("base64");
-  return `data:font/truetype;charset=utf-8;base64,${base64Font}`;
+const loadFont = (filename, format) => () => {
+  const base64Font = fs
+    .readFileSync(path.resolve(__dirname, `data/${filename}`))
+    .toString("base64");
+
+  return {
+    data: `data:font/${format};charset=utf-8;base64,${base64Font}`,
+    format,
+  };
 };
 
 module.exports = {
   sqliteDb: new sqlite3(path.resolve(__dirname, "data/sqlite")),
   fontBase64: {
-    MeQuran: loadFontBase64(path.resolve(__dirname, "data/me_quran.ttf")),
-    NotoNaskhArabic: loadFontBase64(
-      path.resolve(__dirname, "data/NotoNaskhArabic-Regular.ttf")
+    MeQuran: loadFont("me_quran.ttf", "truetype"),
+    NotoNaskhArabic: loadFont("NotoNaskhArabic-Regular.ttf", "truetype"),
+    OpenSans: loadFont("OpenSans-Regular.ttf", "truetype"),
+    Scheherazade: loadFont("ScheherazadeNew-Regular.ttf", "truetype"),
+    KFGQPCUthmanTahaNaskh: loadFont(
+      "KFGQPC Uthman Taha Naskh Regular.ttf",
+      "truetype"
+    ),
+    KFGQPCUthmanScriptHafs: loadFont(
+      "KFGQPC Uthmanic Script HAFS Regular.otf",
+      "opentype"
     ),
   },
 };

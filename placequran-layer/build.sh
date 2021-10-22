@@ -3,7 +3,7 @@
 rm -rf nodejs placequran-layer.zip
 unzip chrome_aws_lambda.zip
 
-npm install --prefix nodejs --no-package-lock --no-save better-sqlite3
+npm install --prefix nodejs --no-package-lock --no-save better-sqlite3@7.4.3
 
 pack=$(npm pack)
 
