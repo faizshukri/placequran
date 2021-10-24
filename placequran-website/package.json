@@ -6,7 +6,7 @@
     "dev": "parcel src/index.html",
     "prebuild": "rimraf ./dist",
     "build": "parcel build src/index.html",
-    "postbuild": "cp -r static/* dist/",
+    "postbuild": "rsync -av static/ dist/ --exclude=.*",
     "predeploy": "npm run build",
     "deploy": "dotenv cross-var ./deploy.sh"
   },
