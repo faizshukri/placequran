@@ -196,10 +196,15 @@ export const romanToArabic = (number: number): string => {
 };
 
 export const generateHtml = (
-  translations: { translation: string; meta?: string; verses: Verse[] }[]
+  translations: { translation: string; meta?: string; verses: Verse[] }[],
+  size?: string
 ): string => {
   if (!translations || translations.length == 0) {
     throw new QuranParamError("Data not available");
+  }
+
+  if (!size) {
+    size = "m";
   }
 
   const fonts = {
@@ -303,7 +308,7 @@ export const generateHtml = (
       }
 
       body {
-        width: 600px;
+        width: ${size == "l" ? 800 : size == "s" ? 400 : 600}px;
         padding: 1px 5px;
         margin: 0px;
       }

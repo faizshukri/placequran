@@ -8,7 +8,17 @@ import {
 } from "./quran";
 
 export const parsePath = (path: string, query: string) => {
-  const [surah, verses, translations] = path.split("/").filter(Boolean);
+  path = path.replace(/^\s*\/*/, "");
+
+  let surah: string, verses: string, translations: string, size: string;
+
+  if (path.startsWith("size_")) {
+    [size, surah, verses, translations] = path.split("/").filter(Boolean);
+    size = size.replace("size_", "");
+  } else {
+    [surah, verses, translations] = path.split("/").filter(Boolean);
+    size = "m";
+  }
   const queryParams = new URLSearchParams(query);
   const type = queryParams.get("t");
 
@@ -17,6 +27,7 @@ export const parsePath = (path: string, query: string) => {
     verses,
     translations,
     type,
+    size,
   };
 };
 
@@ -26,7 +37,8 @@ const response = async (
     verses,
     translations,
   }: { surah: string; verses: string; translations: string },
-  operation: string
+  operation: string,
+  size: string
 ): Promise<{ type: string; body: string }> => {
   const params = parseParam(surah, verses, translations);
   if (operation === "param") {
@@ -52,7 +64,7 @@ const response = async (
     };
   }
 
-  const html = generateHtml(api2);
+  const html = generateHtml(api2, size);
   if (operation === "html") {
     return {
       type: "text/html; charset=utf-8",
@@ -67,11 +79,11 @@ const response = async (
 };
 
 export const generator = async (path: string, query: string) => {
-  let { surah, verses, translations, type } = parsePath(path, query);
+  let { surah, verses, translations, type, size } = parsePath(path, query);
 
   if (!type || !["param", "api", "api2", "html", "image"].includes(type)) {
     type = "image";
   }
 
-  return response({ surah, verses, translations }, type);
+  return response({ surah, verses, translations }, type, size);
 };
