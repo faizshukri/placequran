@@ -14,6 +14,8 @@ A serverless project that bootstraping all aws components.
 | yarn test  | Run unit test                       |
 | sls deploy | Deploy the whole serverless project |
 
+Here is the [architecture diagram](placequran-serverless/README.md) of this project.
+
 ## 2. Website
 
 A static website to serve the main page.
