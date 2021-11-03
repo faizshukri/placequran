@@ -185,10 +185,16 @@ resources:
               headers["cloudfront-is-desktop-viewer"] &&
               headers["cloudfront-is-desktop-viewer"].value.toLowerCase() == "true";
 
-            if (isMobile && !isTablet) {
-              request.uri = "/size_s" + request.uri;
-            } else if (isDesktop) {
-              request.uri = "/size_l" + request.uri;
+            if (["s", "m", "l"].some((size) => request.uri.startsWith(`/${size}/`))) {
+              return request;
+            }
+
+            if (isDesktop) {
+              request.uri = "/l" + request.uri;
+            } else if (isMobile && !isTablet) {
+              request.uri = "/s" + request.uri;
+            } else {
+              request.uri = "/m" + request.uri;
             }
 
             return request;

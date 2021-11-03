@@ -17,7 +17,7 @@ export async function handler(
 ): Promise<APIGatewayProxyResultV2> {
   log(event.rawPath);
 
-  const regex = /^\/?(?:size_[s|m|l]\/)?(\d+)(?:\/|$)/gm;
+  const regex = /^\/?(?:[s|m|l]\/)?(\d+)(?:\/|$)/gm;
   const isImageRequest = regex.test(event.rawPath);
   const typeParam = new URLSearchParams(event.rawQueryString).get("t");
   const shouldReturnImageFormat = !typeParam || typeParam == "image";

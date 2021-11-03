@@ -10,7 +10,7 @@ test("Parse path should work correctly", (t) => {
     size: "m",
   });
 
-  t.deepEqual(parsePath("/size_s/2/1-2", ""), {
+  t.deepEqual(parsePath("/s/2/1-2", ""), {
     surah: "2",
     verses: "1-2",
     translations: undefined,

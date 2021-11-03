@@ -12,9 +12,8 @@ export const parsePath = (path: string, query: string) => {
 
   let surah: string, verses: string, translations: string, size: string;
 
-  if (path.startsWith("size_")) {
+  if (["s", "m", "l"].some((size) => path.startsWith(`${size}/`))) {
     [size, surah, verses, translations] = path.split("/").filter(Boolean);
-    size = size.replace("size_", "");
   } else {
     [surah, verses, translations] = path.split("/").filter(Boolean);
     size = "m";
