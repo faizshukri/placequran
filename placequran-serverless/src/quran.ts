@@ -291,6 +291,7 @@ export const generateHtml = (
         text-align: right;
         padding-bottom: 10px;
         font-weight: bold;
+        padding-left: 220px;
       }
 
       .no_ayat {
@@ -308,9 +309,10 @@ export const generateHtml = (
       }
 
       body {
-        width: ${size == "l" ? 800 : size == "s" ? 400 : 600}px;
+        max-width: ${size == "l" ? 800 : size == "s" ? 400 : 600}px;
         padding: 1px 5px;
         margin: 0px;
+        display: inline-block;
       }
       </style>
     </head>
