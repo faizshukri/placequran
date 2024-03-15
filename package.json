@@ -17,8 +17,5 @@
   "homepage": "https://gitlab.com/faizshukri/placequran-serverless#readme",
   "workspaces": [
     "placequran*"
-  ],
-  "devDependencies": {
-    "@parcel/transformer-image": "2.0.0-rc.0"
-  }
+  ]
 }
