@@ -32,7 +32,7 @@
     "fork-ts-checker-webpack-plugin": "^6.3.4",
     "node-loader": "^2.0.0",
     "puppeteer": "^10.4.0",
-    "serverless-offline": "^8.2.0",
+    "serverless-offline": "^13.3.3",
     "serverless-plugin-typescript": "^2.1.0",
     "serverless-webpack": "^5.5.4",
     "ts-node": "^10.3.0",

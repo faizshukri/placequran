@@ -195,6 +195,15 @@ export const romanToArabic = (number: number): string => {
     .join("");
 };
 
+export const romanToHindi = (number: number): string => {
+  const numeral = ["०", "१", "२", "३", "४", "५", "६", "७", "८", "९"];
+  return number
+    .toString()
+    .split("")
+    .map((a) => numeral[a])
+    .join("");
+};
+
 export const generateHtml = (
   translations: { translation: string; meta?: string; verses: Verse[] }[],
   size?: string
@@ -211,6 +220,8 @@ export const generateHtml = (
     MeQuran: fontBase64.MeQuran(),
     NotoNaskhArabic: fontBase64.NotoNaskhArabic(),
     OpenSans: fontBase64.OpenSans(),
+    JameelNooriUrdu: fontBase64.JameelNooriUrdu(),
+    Mangal: fontBase64.Mangal(),
   };
 
   return `
@@ -242,6 +253,22 @@ export const generateHtml = (
         font-style: normal;
         font-weight: normal;
         src: url(${fonts.OpenSans.data}) format('${fonts.OpenSans.format}');
+      }
+
+      @font-face {
+        font-family: 'Jameel Noori Urdu';
+        font-style: normal;
+        font-weight: normal;
+        src: url(${fonts.JameelNooriUrdu.data}) format('${
+    fonts.JameelNooriUrdu.format
+  }');
+      }
+
+      @font-face {
+        font-family: 'Mangal Regular';
+        font-style: normal;
+        font-weight: normal;
+        src: url(${fonts.Mangal.data}) format('${fonts.Mangal.format}');
       }
 
       .translation-general {
@@ -286,6 +313,22 @@ export const generateHtml = (
         left: 1px;
       }
 
+      .translation-ur {
+        font-family: 'Jameel Noori Urdu', sans-serif;
+        font-size: 25px;
+        line-height: 35px;
+      }
+
+      .translation-ur .no_ayat {
+        font-size: 21px;
+      }
+
+      .translation-hi {
+        font-family: 'Mangal Regular', sans-serif;
+        font-size: 18px;
+        line-height: 26px;
+      }
+
       .translation-meta {
         font-style: normal;
         text-align: right;
@@ -327,6 +370,16 @@ export const generateHtml = (
               : verses
                   .map((verse, index) => {
                     const isLast = index == verses.length - 1;
+                    const number = (() => {
+                      switch (translation) {
+                        case "ur":
+                          return romanToArabic(verse.aya);
+                        case "hi":
+                          return romanToHindi(verse.aya);
+                        default:
+                          return verse.aya;
+                      }
+                    })();
                     return `${verse.text}${
                       translation === "ar"
                         ? `<span class="berhenti ${
@@ -334,7 +387,7 @@ export const generateHtml = (
                           }">&nbsp;&nbsp;۝&nbsp;<span class="no_ayat">${romanToArabic(
                             verse.aya
                           )}</span></span>`
-                        : ` <strong><span class="no_ayat">[${verse.aya}]</span></strong>`
+                        : ` <strong><span class="no_ayat">[${number}]</span></strong>`
                     }`;
                   })
                   .join("&nbsp;&nbsp;")

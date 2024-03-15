@@ -28,5 +28,7 @@ module.exports = {
       "KFGQPC Uthmanic Script HAFS Regular.otf",
       "opentype"
     ),
+    JameelNooriUrdu: loadFont("Jameel Noori Nastaleeq Regular.ttf", "truetype"),
+    Mangal: loadFont("Mangal Regular.ttf", "truetype"),
   },
 };
