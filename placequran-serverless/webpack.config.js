@@ -18,7 +18,12 @@ module.exports = {
   resolve: {
     extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
   },
-  externals: ["aws-sdk", "chrome-aws-lambda", "placequran-layer"],
+  externals: [
+    "@aws-sdk/client-s3",
+    "puppeteer-core",
+    "@sparticuz/chromium",
+    "placequran-layer",
+  ],
   module: {
     rules: [
       {

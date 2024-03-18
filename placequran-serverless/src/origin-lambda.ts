@@ -1,5 +1,9 @@
 import log from "./lib/log";
-import { S3 } from "aws-sdk";
+import {
+  S3Client,
+  GetObjectCommand,
+  PutObjectCommand,
+} from "@aws-sdk/client-s3";
 import { generator } from "./generator";
 import { URLSearchParams } from "url";
 import getCacheHeader from "./lib/cache-header";
@@ -32,7 +36,7 @@ export async function handler(
   let body = "";
   let contentType = "image/png";
   let statusCode = 200;
-  const client = new S3();
+  const client = new S3Client();
 
   try {
     if (
@@ -44,12 +48,12 @@ export async function handler(
 
     // get file from s3
     console.log("111: get file from s3");
-    const { Body, ContentType } = await client
-      .getObject({
+    const { Body, ContentType } = await client.send(
+      new GetObjectCommand({
         Bucket: process.env.WEBSITE_BUCKET as string,
         Key: key,
       })
-      .promise();
+    );
 
     if (!ContentType || !Body) {
       contentType = "text/plain";
@@ -58,7 +62,7 @@ export async function handler(
       );
     } else {
       contentType = ContentType;
-      body = Body.toString("base64");
+      body = await Body.transformToString("base64");
     }
   } catch {
     if (isImageRequest) {
@@ -70,14 +74,14 @@ export async function handler(
         contentType = result.type;
 
         if (!process.env.IS_OFFLINE && shouldReturnImageFormat) {
-          await client
-            .putObject({
+          await client.send(
+            new PutObjectCommand({
               Bucket: process.env.WEBSITE_BUCKET as string,
               Key: key,
               Body: Buffer.from(body, "base64"),
               ContentType: contentType,
             })
-            .promise();
+          );
         }
       } catch (err) {
         console.log("333: generate error");

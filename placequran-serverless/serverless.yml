@@ -18,22 +18,24 @@ provider:
   stage: ${self:custom.dotenvVars.ENVIRONMENT, 'dev'}
   region: ${self:custom.dotenvVars.AWS_DEFAULT_REGION, 'us-east-1'}
 
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - "s3:GetObject"
-      Resource:
-        Fn::Join: ["", ["arn:aws:s3:::", { "Ref": WebsiteBucket }, "/*"]]
-    - Effect: "Allow"
-      Action:
-        - "s3:ListBucket"
-      Resource:
-        Fn::Join: ["", ["arn:aws:s3:::", { "Ref": WebsiteBucket }]]
-    - Effect: "Allow"
-      Action:
-        - "s3:PutObject"
-      Resource:
-        Fn::Join: ["", ["arn:aws:s3:::", { "Ref": WebsiteBucket }, "/*"]]
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "s3:GetObject"
+          Resource:
+            Fn::Join: ["", ["arn:aws:s3:::", { "Ref": WebsiteBucket }, "/*"]]
+        - Effect: "Allow"
+          Action:
+            - "s3:ListBucket"
+          Resource:
+            Fn::Join: ["", ["arn:aws:s3:::", { "Ref": WebsiteBucket }]]
+        - Effect: "Allow"
+          Action:
+            - "s3:PutObject"
+          Resource:
+            Fn::Join: ["", ["arn:aws:s3:::", { "Ref": WebsiteBucket }, "/*"]]
 
   environment:
     WEBSITE_BUCKET: !Ref WebsiteBucket
@@ -56,12 +58,17 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:custom.dotenvVars.BUCKET_NAME, 'placequran-website'}-${self:provider.stage}
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: false
+          BlockPublicPolicy: false
+          IgnorePublicAcls: false
+          RestrictPublicBuckets: false
         LifecycleConfiguration:
           Rules:
-            - Id: remove-tmp-after-3-month
+            - Id: remove-tmp-after-15-days
               Prefix: tmp/
               Status: Enabled
-              ExpirationInDays: 90
+              ExpirationInDays: 15
     WebsiteBucketAllowPublicReadPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
@@ -78,7 +85,7 @@ resources:
       Type: AWS::CloudFront::OriginRequestPolicy
       Properties:
         OriginRequestPolicyConfig:
-          Name: CustomOriginRequestPolicy
+          Name: CustomOriginRequestPolicy-${self:provider.stage}
           Comment: "Device headers"
           HeadersConfig:
             HeaderBehavior: whitelist
@@ -161,7 +168,7 @@ resources:
     CloudfrontFunction:
       Type: AWS::CloudFront::Function
       Properties:
-        Name: serve-by-device
+        Name: serve-by-device-${self:provider.stage}
         AutoPublish: true
         FunctionConfig:
           Comment: !Sub "${AWS::StackName} Dynamic Size"

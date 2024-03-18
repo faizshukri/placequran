@@ -1,10 +1,11 @@
-import chromium from "chrome-aws-lambda";
+import chromium from "@sparticuz/chromium";
+import puppeteer from "puppeteer-core";
 
 export default async (html = ""): Promise<Buffer> => {
-  const browser = await chromium.puppeteer.launch({
+  const browser = await puppeteer.launch({
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath,
+    executablePath: await chromium.executablePath(),
     headless: true,
     ignoreHTTPSErrors: true,
   });
