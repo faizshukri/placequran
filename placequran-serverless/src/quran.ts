@@ -220,8 +220,8 @@ export const generateHtml = (
     MeQuran: fontBase64.MeQuran(),
     NotoNaskhArabic: fontBase64.NotoNaskhArabic(),
     OpenSans: fontBase64.OpenSans(),
-    JameelNooriUrdu: fontBase64.JameelNooriUrdu(),
     Mangal: fontBase64.Mangal(),
+    NastaliqUrdu: fontBase64.NotoNastaliqUrdu(),
   };
 
   return `
@@ -256,11 +256,11 @@ export const generateHtml = (
       }
 
       @font-face {
-        font-family: 'Jameel Noori Urdu';
+        font-family: 'Noto Nastaliq Urdu';
         font-style: normal;
         font-weight: normal;
-        src: url(${fonts.JameelNooriUrdu.data}) format('${
-    fonts.JameelNooriUrdu.format
+        src: url(${fonts.NastaliqUrdu.data}) format('${
+    fonts.NastaliqUrdu.format
   }');
       }
 
@@ -314,9 +314,9 @@ export const generateHtml = (
       }
 
       .translation-ur {
-        font-family: 'Jameel Noori Urdu', sans-serif;
-        font-size: 25px;
-        line-height: 35px;
+        font-family: 'Noto Nastaliq Urdu', sans-serif;
+        font-size: 18px;
+        line-height: 30px;
       }
 
       .translation-ur .no_ayat {
